@@ -1,0 +1,16 @@
+/* Classic Green — the original green-LCD look.
+   Original CSS. No copied skin artwork. */
+:root {
+  --bg: #141414;
+  --panel: #262626;
+  --panel-2: #1d1d1d;
+  --lcd: #7dff5e;
+  --lcd-dim: #3f8a33;
+  --accent: #7dff5e;
+  --text: #e8e8e8;
+  --text-dim: #9a9a9a;
+  --border: #3d3d3d;
+  --btn: #383838;
+  --btn-hover: #4a4a4a;
+  --slider: #7dff5e;
+}

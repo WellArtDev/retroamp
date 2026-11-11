@@ -1,0 +1,18 @@
+/* Blue Steel — cool blue and silver.
+   Original CSS, inspired by the classic blue player layout
+   (Playlist Editor + Media Library). No copied skin artwork. */
+:root {
+  --bg: #101623;
+  --panel: #1c2740;
+  --panel-2: #151d30;
+  --lcd: #8fd4ff;
+  --lcd-dim: #4a7ba6;
+  --accent: #5aa9e6;
+  --text: #e6eef7;
+  --text-dim: #8ba0b8;
+  --border: #2e3d5c;
+  --btn: #27324d;
+  --btn-hover: #35446a;
+  --slider: #5aa9e6;
+  --font: "Segoe UI", system-ui, -apple-system, sans-serif;
+}

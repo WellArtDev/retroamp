@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>RetroAmp</title>
+<link rel="stylesheet" href="styles.css" />
+<link id="theme-link" rel="stylesheet" href="themes/classic-green/theme.css" />
+</head>
+<body>
+<div id="app">
+  <nav id="menubar">
+    <span class="brand" id="brand-name"></span>
+    <div class="menu" data-menu="file">
+      <button type="button">File</button>
+      <div class="dropdown">
+        <button type="button" id="menu-open-files">Open audio files…</button>
+        <button type="button" id="menu-open-folder">Open folder…</button>
+        <hr />
+        <button type="button" id="menu-clear-queue">Clear queue</button>
+      </div>
+    </div>
+    <div class="menu" data-menu="options">
+      <button type="button">Options</button>
+      <div class="dropdown">
+        <label>Theme
+          <select id="theme-select"></select>
+        </label>
+        <button type="button" id="menu-open-themes-folder">Open themes folder…</button>
+        <hr />
+        <button type="button" id="menu-plugins">Plugins…</button>
+        <button type="button" id="menu-open-plugins-folder">Open plugins folder…</button>
+      </div>
+    </div>
+    <div class="menu" data-menu="help">
+      <button type="button">Help</button>
+      <div class="dropdown">
+        <button type="button" id="menu-about">About</button>
+        <button type="button" id="menu-open-readme">How to make themes &amp; plugins</button>
+      </div>
+    </div>
+    <span class="spacer"></span>
+    <span class="clock-mini" id="menu-clock"></span>
+  </nav>
+
+  <div id="main">
+    <section id="left">
+      <div id="player">
+        <div id="lcd">
+          <div class="track-title" id="lcd-title">No track loaded</div>
+          <div class="track-meta">
+            <span id="lcd-source">—</span>
+            <span class="time"><span id="lcd-time">0:00</span> / <span id="lcd-duration">0:00</span></span>
+          </div>
+          <canvas id="visualizer" width="600" height="48"></canvas>
+        </div>
+        <div id="transport">
+          <button class="tbtn" id="btn-prev" title="Previous">⏮</button>
+          <button class="tbtn" id="btn-play" title="Play / Pause">▶</button>
+          <button class="tbtn" id="btn-stop" title="Stop">■</button>
+          <button class="tbtn" id="btn-next" title="Next">⏭</button>
+          <input type="range" id="seek" min="0" max="100" value="0" step="0.1" title="Seek" />
+          <button class="tbtn" id="btn-shuffle" title="Shuffle">⇄</button>
+          <button class="tbtn" id="btn-repeat" title="Repeat">↻</button>
+        </div>
+        <div id="volrow">
+          <span>VOL</span>
+          <input type="range" id="volume" min="0" max="100" value="80" />
+          <span>BAL</span>
+          <input type="range" class="bal" id="balance" min="-100" max="100" value="0" />
+        </div>
+      </div>
+
+      <div id="eq">
+        <h3>Equalizer</h3>
+        <div class="bands" id="eq-bands"></div>
+        <div class="presets" id="eq-presets"></div>
+      </div>
+
+      <div id="sources">
+        <div id="tabs">
+          <button class="tab active" data-tab="local">Local files</button>
+          <button class="tab" data-tab="youtube">YouTube</button>
+          <button class="tab" data-tab="spotify">Spotify</button>
+          <button class="tab" data-tab="synth">Synth demo</button>
+        </div>
+
+        <div class="tabpane active" data-pane="local">
+          <div id="dropzone">Drop audio files here, or click to browse<br /><small>MP3, WAV, OGG, FLAC, M4A</small></div>
+          <input type="file" id="file-input" accept="audio/*" multiple hidden />
+          <p class="hint">Files are played locally in the app. Nothing is uploaded anywhere.</p>
+        </div>
+
+        <div class="tabpane" data-pane="youtube">
+          <input type="url" id="yt-url" placeholder="Paste a YouTube video or playlist URL…" />
+          <div class="row">
+            <button class="tbtn" id="yt-load">Load in player</button>
+            <button class="tbtn" id="yt-example">Load example (lofi)</button>
+          </div>
+          <p class="hint">Plays through YouTube's official embed. Full playback; you may need to be signed in to YouTube for some videos.</p>
+          <div id="yt-holder"></div>
+        </div>
+
+        <div class="tabpane" data-pane="spotify">
+          <input type="url" id="sp-url" placeholder="Paste a Spotify track, album or playlist URL…" />
+          <div class="row">
+            <button class="tbtn" id="sp-load">Load in player</button>
+            <button class="tbtn" id="sp-example">Load example (Today's Top Hits)</button>
+          </div>
+          <p class="hint">Plays through Spotify's official embed. Full playback when signed in to Spotify in the browser; otherwise 30-second previews.</p>
+          <div id="sp-holder"></div>
+        </div>
+
+        <div class="tabpane" data-pane="synth">
+          <p class="hint">Three built-in synthesized songs, generated in the browser with WebAudio — no files needed. Handy for testing the EQ and visualizer.</p>
+          <div class="row" id="synth-buttons"></div>
+        </div>
+      </div>
+    </section>
+
+    <aside id="right">
+      <h2>Playlist</h2>
+      <div id="playlist"><p class="empty">Queue is empty.<br />Add local files, load a YouTube/Spotify link, or try a synth demo song.</p></div>
+      <div id="panels"></div>
+    </aside>
+  </div>
+
+  <footer id="themerow">
+    <span>Theme:</span>
+    <select id="theme-select-footer"></select>
+    <button type="button" id="theme-manage">Manage themes…</button>
+    <span style="flex:1"></span>
+    <span id="plugin-count"></span>
+  </footer>
+</div>
+
+<div id="modal-backdrop">
+  <div id="modal">
+    <button class="close" id="modal-close">✕</button>
+    <h2 id="modal-title">Settings</h2>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<div id="toast"></div>
+<audio id="audio" preload="auto"></audio>
+<script src="app.js"></script>
+</body>
+</html>
